@@ -9,51 +9,132 @@ using namespace std;
 
 int main() {
 	setlocale(LC_ALL, "");
-	cout << "1. äîáàâèòü íîâûå\n2. Èç ôàëà çàãðóçèòü\n";
-	TRANSPORT *mv = nullptr;
-	int a;
-	cin >> a;
-	if (a == 1) {
-		cout << "1. Ëåãêîâóøêà\n2. Ãðóçîâèê\n3. Òðàìâàé\n";
-		int b;
-		cin >> b;
-		cout << "Êîë-âî, öåíà, êîë_ïàññàæèðîâ, öâåò, òèï_òîïëèâà,  ìàññà_ãðóçà, îáú¸ì_äâèãàòåëÿ, ãîä_âûïóñêà, ãîä_çàïóñêà, íîìåð_ìàðøðóòà:\n";
-		if (b == 1) {
-			mv = new TRANSPORT(new Carabrica(), cin);
-		}
-		else if (b==2) {
-			mv = new TRANSPORT(new truckabrica(), cin);
-		}
-		else
-		{
-			mv = new TRANSPORT(new tramabrica(), cin);
-		}
-	}
-	else {
-		string fileName;
-		cout << "File name: ";
-		cin >> fileName;
-		ifstream in(fileName);
-		string str;
-		int b;
-		getline(in, str);
-		
-		b = 1;
-		char ab;
 	
-		if (b == 1) {
-			mv = new TRANSPORT(new Carabrica(), in);
+	TRANSPORT *mv = nullptr;
+	
+	
+	int a,flag;
+	flag = 1;
+	while (flag == 1)
+	{
+		cout << "1. Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð½Ð¾Ð²Ñ‹Ðµ\n2. Ð˜Ð· Ñ„Ð°Ð»Ð° Ð·Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ\n";
+		cin >> a;
+		if (a == 1) {
+			cout << "1. Ð›ÐµÐ³ÐºÐ¾Ð²ÑƒÑˆÐºÐ°\n2. Ð“Ñ€ÑƒÐ·Ð¾Ð²Ð¸Ðº\n3. Ð¢Ñ€Ð°Ð¼Ð²Ð°Ð¹\n";
+			int b;
+			cin >> b;
+			cout << "ÐšÐ¾Ð»-Ð²Ð¾, Ñ†ÐµÐ½Ð°, ÐºÐ¾Ð»_Ð¿Ð°ÑÑÐ°Ð¶Ð¸Ñ€Ð¾Ð², Ñ†Ð²ÐµÑ‚, Ñ‚Ð¸Ð¿_Ñ‚Ð¾Ð¿Ð»Ð¸Ð²Ð°,  Ð¼Ð°ÑÑÐ°_Ð³Ñ€ÑƒÐ·Ð°, Ð¾Ð±ÑŠÑ‘Ð¼_Ð´Ð²Ð¸Ð³Ð°Ñ‚ÐµÐ»Ñ, Ð³Ð¾Ð´_Ð²Ñ‹Ð¿ÑƒÑÐºÐ°, Ð³Ð¾Ð´_Ð·Ð°Ð¿ÑƒÑÐºÐ°, Ð½Ð¾Ð¼ÐµÑ€_Ð¼Ð°Ñ€ÑˆÑ€ÑƒÑ‚Ð°:\n";
+			if (b == 1)
+			{
+				mv = new TRANSPORT(new Carabrica(), cin);
+				ofstream cout("cout.txt", ios_base::app);
+				cout << (*mv);
+				cout.close();
+			}
+			else if (b == 2) {
+				mv = new TRANSPORT(new truckabrica(), cin);
+				ofstream tout("tout.txt", ios_base::app);
+				tout << (*mv);
+				tout.close();
+			}
+			else
+			{
+				mv = new TRANSPORT(new tramabrica(), cin);
+				ofstream trout("trout.txt", ios_base::app);
+				trout << (*mv);
+				trout.close();
+			}
 		}
-		else if (b == 2) {
-			mv = new TRANSPORT(new truckabrica(), in);
+		else if (a == 2)
+		{
+			string fileName;
+			cout << "File name: ";
+			cin >> fileName;
+			ifstream in(fileName);
+			string str;
+			int b;
+			while (!in.eof())
+			{
+				getline(in, str);
+
+				if (str == "Car")
+					b = 1;
+				else if (str == "truck")
+					b = 2;
+				else
+					b = 3;
+
+				if (b == 1) {
+					mv = new TRANSPORT(new Carabrica(), in);
+					ofstream cout("cout.txt", ios_base::app);
+					cout << (*mv);
+					cout << '\n';
+					cout.close();
+				}
+				else if (b == 2) {
+					mv = new TRANSPORT(new truckabrica(), in);
+					ofstream tout("tout.txt", ios_base::app);
+					tout << (*mv);
+					tout << '\n';
+					tout.close();
+				}
+				else
+				{
+					mv = new TRANSPORT(new tramabrica(), in);
+					ofstream trout("trout.txt", ios_base::app);
+					trout << (*mv);
+					trout.close();
+					trout << '\n';
+				}
+				getline(in, str);
+			}
 		}
 		else
+			flag = 0;
+	}
+	ifstream carin("cout.txt");
+	ifstream tin("tout.txt");
+	ifstream trin("trout.txt");
+	string str2;
+	while (!carin.eof())
+	{
+		getline(carin, str2);
+		if (str2 != "")
 		{
-			mv = new TRANSPORT(new tramabrica(), in);
+			mv = new TRANSPORT(new Carabrica(), carin);
+			ofstream out("out.txt", ios_base::app);
+			out << (*mv);
+			out << '\n';
+			out.close();
+			getline(carin, str2);
 		}
 	}
-	cout << '\n' << (*mv);
-	ofstream out("out.txt");
-	out << (*mv);
+	while (!tin.eof())
+	{
+		getline(tin, str2);
+		if (str2 != "")
+		{
+			mv = new TRANSPORT(new truckabrica(), tin);
+			ofstream out("out.txt", ios_base::app);
+			out << (*mv);
+			out << '\n';
+			out.close();
+			getline(carin, str2);
+		}
+	}
+	while (!trin.eof())
+	{
+		getline(trin, str2);
+		if (str2 != "")
+		{
+			mv = new TRANSPORT(new tramabrica(), trin);
+			ofstream out("out.txt", ios_base::app);
+			out << (*mv);
+			out << '\n';
+			out.close();
+			getline(carin, str2);
+		}
+	}
+
 	system("pause>>void");
 }
