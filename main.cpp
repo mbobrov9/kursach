@@ -136,5 +136,5 @@ int main() {
 		}
 	}
 
-	system("pause>>void")
+	system("pause>>void");
 }
